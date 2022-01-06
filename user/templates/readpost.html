@@ -1,0 +1,38 @@
+{% extends 'main.html' %} {% block content %}
+<!-- Jumbotron -->
+<div id="intro" class="p-5 text-center bg-light">
+    <h1 class="mb-0 h4 text-primary">{{pin.title}}</h1>
+</div>
+<!-- Jumbotron -->
+<!--Main layout-->
+<main class="mt-4 mb-5">
+    <div class="container">
+        <!--Grid row-->
+        <div class="row">
+            <!--Grid column-->
+            <div class="col-12 mb-4">
+                <!--Section: Post data-mdb-->
+                <section class="border-bottom mb-4">
+                    <img src="/static/media/{{pin.img}}" class="img-fluid shadow-2-strong rounded-5 mb-4" alt="" />
+                </section>
+                <!--Section: Post data-mdb-->
+
+                <!--Section: Text-->
+                <section>
+                    <p><strong>{{pin.caption}}</strong></p>
+
+                    <p>
+                        {{pin.brief}}
+                    </p>
+                </section>
+            </div>
+            <!--Grid column-->
+
+        </div>
+        <!--Grid row-->
+    </div>
+</main>
+<!--Main layout-->
+
+
+{% endblock %}

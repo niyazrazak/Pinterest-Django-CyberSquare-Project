@@ -1,0 +1,37 @@
+{% extends 'main.html' %} {% block content %}
+<h1>Add Post</h1>
+<!--  -->
+<form id="form" action="{% url 'addpin' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-label row">
+        <input type="file" name="image" id="file" required>
+        <div class="preview">
+            <!--selected image goes here -->
+            <img src="" id="image" width="250" height="auto">
+        </div>
+    </div>
+
+    <div class="form-label row">
+        <label for="text" class="col-12 col-form-label">Add Your Title</label>
+        <div class="col-12">
+            <input id="title" name="title" placeholder="Enter Your Title here" class="form-control here" required type="text">
+        </div>
+    </div>
+    <div class="form-label row">
+        <label for="textarea" class="col-12 col-form-label">Tell Everyone What Your Post Is About</label>
+        <div class="col-12">
+            <textarea id="caption" name="caption" cols="40" rows="2" class="form-control" placeholder="Enter Here" required></textarea>
+        </div>
+    </div>
+    <div class="form-label row">
+        <label for="textarea" class="col-12 col-form-label">Explain What People Can See In The Post</label>
+        <div class="col-12">
+            <textarea id="brief" name="brief" cols="40" rows="5" class="form-control" placeholder="Enter Here" required></textarea>
+        </div>
+    </div>
+    <div class="form-label row">
+        <button type="submit" class="btn btn-success">Upload</button>
+    </div>
+</form>
+<!--  -->
+{% endblock %}
