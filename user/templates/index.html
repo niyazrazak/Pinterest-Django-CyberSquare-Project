@@ -284,7 +284,7 @@
                         </div>
 
                         <div class="form-check d-flex justify-content-center mb-5">
-                            <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
+                            <input class="form-check-input me-2" type="checkbox" value="" id="condition">
                             <label class="form-check-label" for="form2Example3">
                                 I agree all statements in <a href="#!">Terms of service</a>
                             </label>
@@ -294,12 +294,11 @@
                             <button type="submit" class="btn btn-primary btn-lg ">Register</button>
                         </div>
                     </form>
+                    {% if messages %} {% for message in messages %}
                     <div class="text-center">
-                        {% if messages %} {% for message in messages %}
-                        <small class='fw-bold text-danger'>{{message}}</small> {% endfor %} {% endif %}
+                        <small class='fw-bold text-danger'>{{message}}</small>
                     </div>
-                    </ul>
-                    {% endif %}
+                    {% endfor %}{% endif %}
                 </div>
             </div>
         </div>

@@ -24,8 +24,8 @@ def fnSignUp(request):
             if User.objects.filter(email=email).exists():
                 messages.add_message(request, messages.INFO,
                                      'Email already Exists.')
-                # messages.error(
-                #     request, 'Email is Already Exists Try Another Email')
+                messages.error(
+                    request, 'Email is Already Exists Try Another Email')
                 return redirect("index")
             else:
                 user = form.save()
