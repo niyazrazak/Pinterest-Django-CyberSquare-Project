@@ -1,9 +1,18 @@
+from select import select
 from django.contrib import messages
-from django.shortcuts import render, redirect
 from django.contrib.auth import logout
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from .forms import NewUserForm
 from .models import *
 # Create your views here.
+
+
+def fnHead(request):
+    form = NewUserForm
+    context = {"form": form}
+    return render(request, 'head.html', context)
 
 
 def fnIndex(request):
@@ -40,7 +49,6 @@ def fnSignIn(request):
     if request.method == "POST":
         email = request.POST.get('email')
         password = request.POST.get('password')
-        print(email)
         user = User.objects.filter(email=email, password=password).exists()
         if user:
             user = User.objects.get(email=email, password=password)
@@ -51,6 +59,26 @@ def fnSignIn(request):
         else:
             return render(request, 'index.html', {'mes': 'Error : Wrong Username/Password'})
     return redirect("index")
+
+
+def fnReadOnly(request, pid):
+    form = NewUserForm
+    try:
+        pinid = Post.objects.filter(id=pid).get(id=pid)
+    except:
+        pinid = ''
+    try:
+        stuff = get_object_or_404(Post, id=pid)
+        totalLikes = stuff.total_likes()
+    except:
+        totalLikes = ''
+    try:
+        comment = Comment.objects.filter(post_id=pid).all().select_related()
+    except:
+        comment = ''
+    context = {'pin': pinid, 'likes': totalLikes,
+               'comment': comment, "form": form}
+    return render(request, 'readonly.html', context)
 
 
 def fnMain(request):
@@ -136,7 +164,16 @@ def fnReadPost(request, pid):
         pinid = Post.objects.filter(id=pid).get(id=pid)
     except:
         pinid = ''
-    context = {'pin': pinid}
+    try:
+        stuff = get_object_or_404(Post, id=pid)
+        totalLikes = stuff.total_likes()
+    except:
+        totalLikes = ''
+    try:
+        comment = Comment.objects.filter(post_id=pid).all().select_related()
+    except:
+        comment = ''
+    context = {'pin': pinid, 'likes': totalLikes, 'comment': comment}
     return render(request, 'readpost.html', context)
 
 
@@ -151,6 +188,37 @@ def fnProfile(request):
     return render(request, 'myprofile.html', context)
 
 
+def fnComments(request, pk):
+    try:
+        if request.method == 'POST':
+            user_id = request.session['log']
+            user = User.objects.get(id=user_id)
+            comment = request.POST.get('comment_post')
+            print(comment)
+            print(type(pk))
+            qrytest = Comment(comment=comment, user=user, post_id=pk)
+            qrytest.save()
+            return HttpResponseRedirect(reverse('readpin', args=[str(pk)]))
+    except:
+        return HttpResponseRedirect(reverse('readpin', args=[str(pk)]))
+
+
 def fnLogout(request):
     logout(request)
     return redirect('index')
+
+
+def BlogPostLike(request, pk):
+    try:
+        user_id = request.session['log']
+        post = get_object_or_404(Post, id=request.POST.get('blogpost_id'))
+        # print(pk, user_id)
+        # if post.likes.filter(user_id=user_id).exists():
+        #     print("remove")
+        #     # post.likes.remove(user_id)
+        # else:
+        post.likes.add(user_id)
+        return HttpResponseRedirect(reverse('readpin', args=[str(pk)]))
+    except:
+        print("Except worked")
+        return HttpResponseRedirect(reverse('readpin', args=[str(pk)]))

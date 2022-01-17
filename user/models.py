@@ -1,6 +1,8 @@
 from django.db import models
 from django.db.models.fields import BigIntegerField
 
+import user
+
 # Create your models here.
 
 
@@ -20,3 +22,13 @@ class Post(models.Model):
     title = models.CharField(max_length=200)
     caption = models.TextField()
     brief = models.TextField()
+    likes = models.ManyToManyField(User, related_name='blogpost_like')
+
+    def total_likes(self):
+        return self.likes.count()
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment = models.TextField()

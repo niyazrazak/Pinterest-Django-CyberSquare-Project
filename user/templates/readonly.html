@@ -1,9 +1,8 @@
-{% extends 'main.html' %} {% load static %}{% load social_share %} {% block content %}
+{% extends 'head.html' %} {% load static %} {% load social_share %} {% block content %}
 <!-- Jumbotron -->
 <div id="intro" class="p-5 text-center bg-light">
-    <h1 class="mb-0 h4 text-primary">{{pin.title}}</h1>
+    <h1 class="mb-0 h4 text-primary pt-5">{{pin.title}}</h1>
 </div>
-<!-- Jumbotron -->
 <!--Main layout-->
 <main class="mt-4 mb-5">
     <div class="container">
@@ -25,15 +24,12 @@
                     <!-- like comment -->
 
                     <div class="col-lg-6 mb-3 m-lg-0 small d-flex justify-content-end">
-                        <form action="{% url 'readpinlike' pin.id %}" method="POST">
-                            {% csrf_token %}
-                            <a type="submit" class="d-flex align-items-center me-3">
-                                <button type="submit" name="blogpost_id" value="{{pin.id}}" class="d-flex align-items-center me-3 border-0 p-0 m-0 text-primary" style="background:none;">
-                                    <i class="far fa-thumbs-up me-2"></i>
-                                    <p class="mb-0">{{ likes }} Like</p>
-                                </button>
-                            </a>
-                        </form>
+                        <a type="submit" class="d-flex align-items-center me-3">
+                            <button type="submit" name="blogpost_id" value="{{pin.id}}" class="d-flex align-items-center me-3 border-0 p-0 m-0 text-primary" style="background:none;">
+                                <i class="far fa-thumbs-up me-2"></i>
+                                <p class="mb-0">{{ likes }} Like</p>
+                            </button>
+                        </a>
                         <a href="#comment" class="d-flex align-items-center me-3">
                             <i class="far fa-comment-dots me-2"></i>
                             <p class="mb-0">Comment</p>
@@ -75,21 +71,18 @@
                                     </div>
                                     {% endfor %}
                                     <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
-                                        <form action="{% url 'postcomment' pin.id %}" method="POST" id="comment">
-                                            {% csrf_token %}
-                                            <div class="d-flex flex-start w-100">
-                                                <img class="rounded-circle shadow-1-strong me-3" src="{% static 'images/avater.png' %}" alt="avatar" width="40" height="40" />
-                                                <div class="form-outline w-100">
-                                                    <textarea class="form-control" name="comment_post" id="comment_post" rows="4" style="background: #fff;"></textarea>
-                                                    <label class="form-label" for="textAreaExample">Message</label>
-                                                </div>
+                                        <div class="d-flex flex-start w-100">
+                                            <img class="rounded-circle shadow-1-strong me-3" src="{% static 'images/avater.png' %}" alt="avatar" width="40" height="40" />
+                                            <div class="form-outline w-100">
+                                                <textarea class="form-control" name="comment_post" id="comment_post" rows="4" style="background: #fff;"></textarea>
+                                                <label class="form-label" for="textAreaExample" id="comment">Message</label>
                                             </div>
-                                            <div class="float-end mt-2 pt-1">
-                                                <button type="submit" class="btn btn-primary btn-sm">Post
-                                                    comment</button>
-                                                <button type="reset" class="btn btn-outline-primary btn-sm">Cancel</button>
-                                            </div>
-                                        </form>
+                                        </div>
+                                        <div class="float-end mt-2 pt-1">
+                                            <button type="submit" class="btn btn-primary btn-sm">Post
+                                                comment</button>
+                                            <button type="reset" class="btn btn-outline-primary btn-sm">Cancel</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -137,6 +130,4 @@
         </div>
     </div>
 </div>
-
-
 {% endblock %}
